@@ -43,43 +43,46 @@
 
         <h2>Introduction to Robotics</h2>
         <p>
-            Reaction Time Game Using Arduino with
-7-Segment Score Display
+            Reaction Time Game Using Arduino with 7-Segment Score Display </br>
 
 Project Overview
 The Reaction Time Game is an interactive embedded systems project developed using the Arduino
 Uno platform. The purpose of this project is to test and improve a player's reaction speed and
 concentration. The system randomly activates one of four LEDs, and the player must quickly press
 the corresponding button. The faster and more accurately the player responds, the higher the
-score.
-Objectives
-- Design a real-time interactive game using Arduino.
-- Measure user reaction time using the millis() function.
-- Display the score using a 7-segment display controlled by a 74HC595 shift register.
-- Implement sound feedback using a buzzer.
-- Practice hardware interfacing and embedded programming concepts.
-Hardware Components
+score.</br>
+        
+Objectives</br>
+- Design a real-time interactive game using Arduino.</br>
+- Measure user reaction time using the millis() function.</br>
+- Display the score using a 7-segment display controlled by a 74HC595 shift register.</br>
+- Implement sound feedback using a buzzer.</br>
+- Practice hardware interfacing and embedded programming concepts.</br>
+        </br>
+Hardware Components</br>
 - Arduino Uno
-- 4 LEDs (Red, Green, Blue, Yellow)
-- 4 Push Buttons
-- Piezo Buzzer
-- 74HC595 Shift Register
-- Two 7-segment Displays (Common Anode)
-- Resistors for LEDs
+- 4 LEDs (Red, Green, Blue, Yellow)</br>
+- 4 Push Buttons</br>
+- Piezo Buzzer</br>
+- 74HC595 Shift Register</br>
+- Two 7-segment Displays (Common Anode)</br>
+- Resistors for LEDs</br>
+        
 The LEDs are connected to digital pins 9–12. Push buttons are connected to pins 2–5 using internal
 pull-up resistors. The buzzer is connected to pin 8. The 74HC595 shift register is connected to
-analog pins A0–A2 and controls the 7-segment display.
+analog pins A0–A2 and controls the 7-segment display.</br>
 System Operation
-1. The game starts automatically after power-up.
-2. The system waits for a random delay between 1–3 seconds.
-3. One LED lights up randomly.
-4. The player must press the correct matching button.
-5. The system measures the reaction time.
-6. Points are awarded based on speed (faster reactions earn more points).
-7. The updated score is displayed on the 7-segment display.
-8. If the wrong button is pressed, the game ends and a sound alert is played.
-9. The score resets and the game restarts.
-Conclusion
+1. The game starts automatically after power-up.</br>
+2. The system waits for a random delay between 1–3 seconds.</br>
+3. One LED lights up randomly.</br>
+4. The player must press the correct matching button.</br>
+5. The system measures the reaction time.</br>
+6. Points are awarded based on speed (faster reactions earn more points).</br>
+7. The updated score is displayed on the 7-segment display.</br>
+8. If the wrong button is pressed, the game ends and a sound alert is played.</br>
+9. The score resets and the game restarts.</br>
+        </br>
+Conclusion</br>
 This project demonstrates practical implementation of embedded system concepts including digital
 I/O control, timing functions, random number generation, and hardware communication using a shift
 register. It provides an engaging way to understand microcontroller-based system design and
