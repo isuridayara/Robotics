@@ -7,9 +7,10 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #fdfefe; }
         header { background: #27ae60; color: #fff; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 20px; }
-        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; margin-bottom: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
         h2 { color: #27ae60; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
-        .highlight { background-color: #e8f8f5; padding: 10px; border-left: 5px solid #27ae60; margin: 10px 0; }
+        .btn-container { text-align: center; margin: 30px 0; }
+        .wokwi-btn { background-color: #27ae60; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; }
         .footer { text-align: center; font-size: 0.9em; color: #7f8c8d; margin-top: 40px; }
     </style>
 </head>
@@ -22,34 +23,22 @@
 
 <div class="card">
     <h2>Project Overview</h2>
-    <p>In modern smart agriculture, supplemental lighting is essential for plant growth during cloudy days or nighttime. However, constant lighting is energy-inefficient. This project implements a <strong>Variable Control System</strong> that dynamically adjusts the grow-light intensity based on the amount of natural sunlight detected in the environment.</p>
+    <p>This project implements a <strong>Variable Control System</strong> that dynamically adjusts grow-light intensity based on ambient sunlight, optimizing energy efficiency in smart agriculture.</p>
 </div>
 
-<div class="card">
-    <h2>Components Used</h2>
-    <ul>
-        <li>Keyestudio UNO Board</li>
-        <li>Photoresistor Module (Ambient Light Sensor)</li>
-        <li>Yellow LED Module (as the Grow-Light)</li>
-        <li>USB Data Cable</li>
-    </ul>
-</div>
+
 
 <div class="card">
-    <h2>Technical Implementation</h2>
-    <div class="highlight">
-        <strong>Pin Mapping:</strong> The Photoresistor is mapped to Analog Pin <strong>A0</strong> to read variable light intensity[cite: 1, 88]. The LED is connected to Digital Pin <strong>D3</strong>, which supports PWM (Pulse Width Modulation)[cite: 1, 69].
-    </div>
-    <p>The system utilizes <strong>PWM</strong> technology to obtain analog-style results through digital methods[cite: 1, 151]. By modulating the duty cycle between 0 (off) and 255 (full brightness), the system can create a smooth transition in light intensity[cite: 1, 150].</p>
+    <h2>Working Principle</h2>
+    <p>The system uses <strong>Pulse Width Modulation (PWM)</strong> on Pin D3. As the Photoresistor (A0) detects less light, the LED brightness increases automatically.</p>
 </div>
 
-<div class="card">
-    <h2>Dynamic Logic</h2>
-    <p>The UNO board reads the analog value from the photoresistor (0–1023). As natural light decreases, the resistance of the photoresistor increases[cite: 1, 205]. The code then maps this input to an inverse PWM output: <strong>Lower ambient light = Higher LED brightness.</strong> This ensures plants receive a consistent level of light while minimizing power consumption during sunny periods.</p>
+<div class="btn-container">
+    <a href="https://wokwi.com/projects/457108190169681921" target="_blank" class="wokwi-btn">View Wokwi Simulation</a>
 </div>
 
 <div class="footer">
-    <p>&copy; 2024 Robotics Portfolio | Project based on KS0530 Solar Kit Lesson 2.1 & 6</p>
+    <p>&copy; 2024 Robotics Portfolio | Project based on KS0530 Solar Kit Lesson 2.1</p>
 </div>
 
 </body>
