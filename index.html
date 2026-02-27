@@ -9,12 +9,12 @@
     body {
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
-        background: #0f172a;
-        color: #f1f5f9;
+        background: #e0f7ff; /* light blue background */
+        color: #0f1d2f; /* dark text for contrast */
     }
 
     header {
-        background: linear-gradient(135deg, #1e293b, #0f172a);
+        background: linear-gradient(135deg, #a0e1ff, #60c0ff); /* light blue gradient */
         padding: 60px 20px;
         text-align: center;
     }
@@ -22,11 +22,12 @@
     header h1 {
         font-size: 42px;
         margin-bottom: 10px;
+        color: #003366; /* dark blue text */
     }
 
     header p {
         font-size: 18px;
-        color: #94a3b8;
+        color: #00264d;
     }
 
     section {
@@ -38,8 +39,9 @@
     .section-title {
         font-size: 28px;
         margin-bottom: 30px;
-        border-left: 5px solid #38bdf8;
+        border-left: 5px solid #00aaff; /* bright light blue */
         padding-left: 15px;
+        color: #003366;
     }
 
     .projects {
@@ -49,21 +51,21 @@
     }
 
     .card {
-        background: #1e293b;
+        background: #b3e5ff; /* light blue card */
         padding: 25px;
         border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.25);
     }
 
     .card h3 a {
         text-decoration: none;
-        color: #38bdf8;
+        color: #005580; /* dark blue for links */
     }
 
     .card h3 a:hover {
@@ -73,9 +75,13 @@
     footer {
         text-align: center;
         padding: 30px;
-        background: #020617;
-        color: #64748b;
+        background: #80d4ff;
+        color: #003366;
         font-size: 14px;
+    }
+
+    .card p {
+        color: #00264d;
     }
 </style>
 </head>
@@ -83,9 +89,8 @@
 <body>
 
 <header>
-    <h1>Robotics Portfolio </h1>
-    <p>
-        Isuri Dayara 4220z </p>
+    <h1>Robotics Portfolio</h1>
+    <p>Isuri Dayara 4220z</p>
 </header>
 
 <section>
@@ -94,34 +99,69 @@
     <div class="projects">
 
         <div class="card">
-            <h3>
-                <a href="reaction-game.html">
-                    Reaction Time Game
-                </a>
-            </h3>
+            <h3><a href="reaction-game.html">Reaction Time Game</a></h3>
             <p>Test your reflexes with this interactive Arduino-based game. LEDs light up randomly and you must press the corresponding button as quickly as possible. Scores are tracked in real-time to challenge your reaction speed.</p>
         </div>
 
         <div class="card">
-            <h3>
-                <a href="snake-game.html">
-                    Snake Game
-                </a>
-            </h3>
+            <h3><a href="snake-game.html">Snake Game</a></h3>
             <p>Classic Snake game implemented in JavaScript and HTML5 Canvas. Control the snake with arrow keys, eat food to grow, and avoid colliding with walls or yourself. Perfect for practicing game logic and canvas drawing.</p>
         </div>
 
         <div class="card">
-            <h3>
-                <a href="memory-game.html">
-                    Memory Game
-                </a>
-            </h3>
+            <h3><a href="memory-game.html">Memory Game</a></h3>
             <p>Train your memory and concentration with this interactive Arduino-based game. Match the correct sequence of LED flashes by pressing the corresponding buttons. The sequence length increases as you progress, making the game more challenging.</p>
         </div>
 
     </div>
+</section>
 
+<section>
+    <h2 class="section-title">📝 Class Projects</h2>
+
+    <div class="projects">
+
+        <div class="card">
+            <h3><a href="task1.html">🧩 Task 1: Basic Output Control</a></h3>
+            <p>Design a simple system that controls an output device.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task2.html">🧩 Task 2: Variable Control System</a></h3>
+            <p>Design a system where the output behavior changes gradually or dynamically.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task3.html">🧩 Task 3: User Interaction System</a></h3>
+            <p>Design a system that responds to user input.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task4.html">🧩 Task 4: Alert or Notification System</a></h3>
+            <p>Design a system that provides sound or alert-based feedback.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task5.html">🧩 Task 5: Display or Information System</a></h3>
+            <p>Design a system that displays information to the user.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task6.html">🧩 Task 6: Environmental Sensing System</a></h3>
+            <p>Design a system that senses environmental conditions.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task7.html">🧩 Task 7: Monitoring System</a></h3>
+            <p>Design a system that monitors physical or environmental parameters.</p>
+        </div>
+
+        <div class="card">
+            <h3><a href="task8.html">🧩 Task 8: Motion or Actuation System</a></h3>
+            <p>Design a system involving movement or mechanical action.</p>
+        </div>
+
+    </div>
 </section>
 
 <footer>
