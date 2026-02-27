@@ -9,8 +9,9 @@
         header { background: #2c3e50; color: #fff; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 20px; }
         .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h2 { color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 10px; }
-        .component-list { columns: 2; -webkit-columns: 2; -moz-columns: 2; }
-        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; }
+        .btn-container { text-align: center; margin-top: 30px; }
+        .wokwi-btn { background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s; }
+        .wokwi-btn:hover { background-color: #0056b3; }
         .footer { text-align: center; font-size: 0.9em; color: #7f8c8d; margin-top: 40px; }
     </style>
 </head>
@@ -23,32 +24,18 @@
 
 <div class="card">
     <h2>Project Overview</h2>
-    <p>Inspired by <strong>Automated Greenhouse Management</strong>, this system identifies a critical real-world need: monitoring environmental safety for crops. In a greenhouse, extreme temperatures can cause irreversible damage to plants. This system acts as an automated visual indicator to alert operators when the climate exceeds safe limits.</p>
+    <p>Inspired by <strong>Automated Greenhouse Management</strong>, this system identifies a critical real-world need: monitoring environmental safety for crops. This system acts as an automated visual indicator to alert operators when the climate exceeds safe limits.</p>
 </div>
 
-<div class="card">
-    <h2>Components Used</h2>
-    <ul class="component-list">
-        <li>Keyestudio UNO Board</li>
-        <li>DHT11 Temperature & Humidity Sensor</li>
-        <li>Yellow LED Module</li>
-        <li>3-pin F-F DuPont Wires</li>
-    </ul>
-</div>
+
 
 <div class="card">
-    <h2>Circuit Design</h2>
-    <p>Following the <strong>KS0530 Kit Manual</strong> specifications:</p>
-    <ul>
-        <li><strong>Sensor:</strong> The DHT11 is connected to Digital Pin <strong>D7</strong>[cite: 1, 2].</li>
-        <li><strong>Output:</strong> The Yellow LED Module is connected to Digital Pin <strong>D3</strong>[cite: 1, 128].</li>
-        <li><strong>Power:</strong> Modules are powered via the 5V and GND rails of the UNO board.</li>
-    </ul>
+    <h2>Technical Implementation</h2>
+    <p>Using the DHT11 sensor from the <strong>KS0530 Kit</strong>, the system monitors temperature. If it rises above 30°C, Digital Pin D3 triggers the Yellow LED.</p>
 </div>
 
-<div class="card">
-    <h2>Working Principle</h2>
-    <p>The microcontroller reads environmental data from the DHT11 sensor. If the temperature exceeds a predefined "safe" threshold (e.g., 30°C), the UNO board triggers a <code>HIGH</code> digital signal to the LED. This provides an immediate visual warning to the greenhouse operator to check the ventilation systems.</p>
+<div class="btn-container">
+    <a href="https://wokwi.com/projects/457108077357574145" target="_blank" class="wokwi-btn">View Wokwi Simulation</a>
 </div>
 
 <div class="footer">
