@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proximity Security Alarm - Robotics Portfolio</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #fdf2f2; }
+        header { background: #c0392b; color: #fff; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #c0392b; border-bottom: 2px solid #e74c3c; padding-bottom: 10px; }
+        .btn-container { text-align: center; margin-top: 30px; }
+        .wokwi-btn { background-color: #c0392b; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .footer { text-align: center; font-size: 0.9em; color: #7f8c8d; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Restricted Area Security Alarm</h1>
+    <p>Task 4: Alert & Notification System</p>
+</header>
+
+<div class="card">
+    <h2>Project Overview</h2>
+    <p>This project addresses home and industrial safety by creating a restricted-zone monitor. It utilizes an ultrasonic sensor to detect movement within a 20cm range, triggering an immediate audible siren and visual flash to deter unauthorized entry.</p>
+</div>
+
+<div class="card">
+    <h2>Technical Logic</h2>
+    <p>Drawing from <strong>Lesson 4.1 (Passive Buzzer)</strong> in the KS0530 Manual, the system uses the <code>tone()</code> function to oscillate between two frequencies (1000Hz and 500Hz). This creates a distinct "police siren" effect rather than a flat beep, which is more effective for emergency notifications.</p>
+</div>
+
+<div class="btn-container">
+    <a href="https://wokwi.com/projects/YOUR_NEW_PROJECT_ID" target="_blank" class="wokwi-btn">View Wokwi Simulation</a>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 Robotics Portfolio | Based on Keyestudio Passive Buzzer Logic</p>
+</div>
+
+</body>
+</html>
