@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light Simulation - Robotics Portfolio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fdf2f2;
+        }
+
+        header {
+            background: #c0392b;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        header h1 { margin: 0 0 8px 0; font-size: 1.9rem; }
+        header p  { margin: 0; opacity: 0.9; font-size: 1rem; }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #c0392b;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        p { margin: 0 0 10px 0; }
+        p:last-child { margin-bottom: 0; }
+
+        code {
+            background: #fdf2f2;
+            color: #c0392b;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        /* ── Table ── */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; }
+        th { background: #c0392b; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+        td { padding: 9px 14px; border-bottom: 1px solid #f2d9d9; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) td { background: #fdf8f8; }
+
+        /* ── Pin grid ── */
+        .pin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .pin-item {
+            background: #fdf2f2;
+            border-left: 3px solid #c0392b;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .pin-item strong {
+            display: block;
+            color: #c0392b;
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+
+        /* ── Code block ── */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 18px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            line-height: 1.75;
+            margin: 10px 0 0 0;
+        }
+        .kw  { color: #569cd6; }
+        .fn  { color: #dcdcaa; }
+        .cm  { color: #6a9955; font-style: italic; }
+        .str { color: #ce9178; }
+        .num { color: #b5cea8; }
+        .pp  { color: #c586c0; }
+
+        /* ── Numbered steps ── */
+        .steps { counter-reset: step; list-style: none; padding: 0; margin: 10px 0 0 0; }
+        .steps li {
+            counter-increment: step;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .steps li::before {
+            content: counter(step);
+            background: #c0392b;
+            color: #fff;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85em;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ── Button ── */
+        .btn-container { text-align: center; margin-top: 30px; }
+        .wokwi-btn {
+            background-color: #c0392b;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .wokwi-btn:hover { background-color: #a93226; }
+
+        .footer { text-align: center; font-size: 0.9em; color: #7f8c8d; margin-top: 40px; }
+
+        /* ── Real-world use case tiles ── */
+        .usecase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .usecase-tile {
+            background: #fdf2f2;
+            border: 1px solid #f5c6c6;
+            border-radius: 8px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+        .usecase-tile .uc-icon { font-size: 1.8rem; display: block; margin-bottom: 6px; }
+        .usecase-tile .uc-title {
+            font-weight: 700;
+            font-size: 0.88em;
+            color: #c0392b;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .usecase-tile p { font-size: 0.8em; color: #666; margin: 0; }
+
+        /* ── Component breakdown ── */
+        .comp-breakdown { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .comp-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: #fdf2f2;
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .comp-badge {
+            background: #c0392b;
+            color: #fff;
+            font-size: 0.72em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .comp-item h4 { margin: 0 0 4px 0; font-size: 0.95em; color: #222; }
+        .comp-item p  { margin: 0; font-size: 0.85em; color: #555; }
+
+        /* ── Traffic light simulator ── */
+        .sim-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: flex-start;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        /* Traffic pole */
+        .traffic-pole {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .pole-label {
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #c0392b;
+            margin-bottom: 4px;
+        }
+        .traffic-box {
+            background: #1a1a1a;
+            border: 3px solid #444;
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .traffic-light {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .light-off-red    { background: #3a0a0a; }
+        .light-off-yellow { background: #3a2e00; }
+        .light-off-green  { background: #0a2a0a; }
+        .light-on-red     { background: #ff3b3b; box-shadow: 0 0 16px #ff3b3b; }
+        .light-on-yellow  { background: #ffd000; box-shadow: 0 0 16px #ffd000; }
+        .light-on-green   { background: #00e050; box-shadow: 0 0 16px #00e050; }
+
+        /* Pedestrian box */
+        .ped-box {
+            background: #1a1a1a;
+            border: 3px solid #444;
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* 7-segment style countdown */
+        .seg-display {
+            background: #0d0d0d;
+            border: 2px solid #333;
+            border-radius: 6px;
+            width: 56px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: #ff3b3b;
+            text-shadow: 0 0 10px #ff3b3b;
+            letter-spacing: -2px;
+            transition: color 0.3s;
+        }
+        .seg-display.off { color: #1a0000; text-shadow: none; }
+
+        /* State label */
+        .state-label {
+            text-align: center;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-top: 4px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Sim button */
+        .sim-btn {
+            background: #c0392b;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sim-btn:hover { background: #a93226; }
+        .sim-btn:active { transform: scale(0.97); }
+        .sim-caption { text-align: center; font-size: 0.8em; color: #888; margin-top: 8px; }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <h1>Traffic Light Simulation</h1>
+    <p>Task 6: Alert &amp; Control System with Pedestrian Button</p>
+</header>
+
+<!-- PROJECT OVERVIEW -->
+<div class="card">
+    <h2>Project Overview</h2>
+    <p>
+        This project simulates a real pedestrian crossing system using Arduino Uno. Three
+        <strong>traffic LEDs</strong> (red, yellow, green) control vehicle flow, while two
+        <strong>pedestrian LEDs</strong> tell people when it is safe to cross. A
+        <strong>push button</strong> lets a pedestrian request a crossing, triggering the full
+        signal sequence automatically. A <strong>buzzer</strong> beeps during the walk phase —
+        speeding up in the final seconds — and a <strong>7-segment display</strong> counts down
+        the remaining crossing time.
+    </p>
+    <p>
+        The system is built around a <strong>state machine</strong> — a common programming pattern
+        in embedded systems where the device moves through defined stages (Green → Yellow → Red →
+        Walk) in a controlled, predictable order.
+    </p>
+</div>
+
+<!-- WHERE IS THIS USED -->
+<div class="card">
+    <h2>Where Is This Used?</h2>
+    <p>
+        Traffic light control systems are one of the most widely deployed embedded systems in the
+        world. The same logic running on this Arduino powers infrastructure across cities globally:
+    </p>
+    <div class="usecase-grid">
+        <div class="usecase-tile">
+            <span class="uc-icon">🚦</span>
+            <span class="uc-title">Pedestrian Crossings</span>
+            <p>Push-button crossings at road junctions with audible beeps and countdown timers.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🏗️</span>
+            <span class="uc-title">Construction Zones</span>
+            <p>Temporary single-lane traffic signals where one direction waits while the other passes.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🅿️</span>
+            <span class="uc-title">Car Parks</span>
+            <p>Entry/exit barriers that display red or green to indicate space availability.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🏭</span>
+            <span class="uc-title">Factory Floors</span>
+            <p>Forklift crossing alerts where a button request pauses conveyor belt traffic.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">♿</span>
+            <span class="uc-title">Accessibility Systems</span>
+            <p>Audio-tactile signals at crossings that beep and vibrate to assist visually impaired users.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🤖</span>
+            <span class="uc-title">Robotics</span>
+            <p>Robot intersection management where multiple autonomous vehicles negotiate right-of-way.</p>
+        </div>
+    </div>
+</div>
+
+<!-- WHAT EACH COMPONENT DOES -->
+<div class="card">
+    <h2>What Each Component Does</h2>
+    <p>Eight components work together to make this crossing system function correctly:</p>
+    <div class="comp-breakdown">
+
+        <div class="comp-item">
+            <span class="comp-badge">Arduino Uno</span>
+            <div>
+                <h4>The Brain</h4>
+                <p>Runs the state machine logic, reads the button, controls all outputs, and manages timing
+                using <code>millis()</code> so the program never blocks — it always stays responsive to a
+                button press even while waiting in a phase.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">Traffic LEDs × 3</span>
+            <div>
+                <h4>Vehicle Signal (Red · Yellow · Green)</h4>
+                <p>Represent the main road signal. Only one is ever on at a time. Green means vehicles
+                may proceed, yellow is a brief warning to stop, and red means stop — allowing pedestrians
+                to cross safely. Each LED has a 220 Ω resistor to limit current to a safe level.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">Pedestrian LEDs × 2</span>
+            <div>
+                <h4>Walk / Don't Walk Signal (Red · Green)</h4>
+                <p>Tell pedestrians whether it is safe to cross. The red pedestrian light stays on while
+                vehicles are moving. When a crossing is granted, it switches to green. In the final
+                2 seconds of the walk phase the green light flashes as a warning that time is running out.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">Push Button</span>
+            <div>
+                <h4>Pedestrian Request</h4>
+                <p>Connected to pin D8 with <code>INPUT_PULLUP</code>, so it reads HIGH normally and LOW
+                when pressed. Pressing it sets a flag (<code>pedRequested = true</code>) which the state
+                machine checks at the end of the green phase before deciding to trigger a crossing.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">Buzzer</span>
+            <div>
+                <h4>Audible Crossing Alert</h4>
+                <p>Beeps at 1000 Hz during the walk phase so visually impaired pedestrians know it is
+                safe to cross. The beep rate speeds up in the final 3 seconds (1200 Hz, faster interval)
+                as an urgency cue that the crossing is about to end — the same behaviour used in real
+                accessible pedestrian signals.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">7-Segment</span>
+            <div>
+                <h4>Countdown Timer Display</h4>
+                <p>Shows the remaining seconds (0–8) of the pedestrian walk phase. Each digit is drawn
+                by turning seven individual LED segments on or off. The Arduino controls all seven
+                segment pins directly (D9–D12, A0–A2) using a lookup table of patterns — no special
+                library needed.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- LIVE SIMULATOR -->
+<div class="card">
+    <h2>Interactive Simulation</h2>
+    <p>See the full crossing sequence in action. Press the pedestrian button to queue a crossing request:</p>
+
+    <div class="sim-wrap">
+
+        <!-- Traffic light column -->
+        <div class="traffic-pole">
+            <div class="pole-label">Traffic Signal</div>
+            <div class="traffic-box">
+                <div class="traffic-light light-off-red"    id="tlRed"></div>
+                <div class="traffic-light light-off-yellow" id="tlYellow"></div>
+                <div class="traffic-light light-on-green"   id="tlGreen"></div>
+            </div>
+        </div>
+
+        <!-- Pedestrian light column -->
+        <div class="traffic-pole">
+            <div class="pole-label">Pedestrian Signal</div>
+            <div class="ped-box">
+                <div class="traffic-light light-on-red"   id="pedRed"></div>
+                <div class="traffic-light light-off-green" id="pedGreen"></div>
+            </div>
+        </div>
+
+        <!-- Countdown + button column -->
+        <div class="traffic-pole">
+            <div class="pole-label">Countdown</div>
+            <div class="seg-display off" id="segDisplay">–</div>
+            <div style="margin-top:10px;">
+                <button class="sim-btn" id="pedBtn" onclick="requestCrossing()">🚶 Press to Cross</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- State label -->
+    <div style="text-align:center; margin-top:16px;">
+        <span class="state-label" id="stateLabel"
+              style="background:#e8f8ee; color:#1a7a3a;">● TRAFFIC GREEN — Vehicles moving</span>
+    </div>
+
+    <p class="sim-caption">Simulated timing is faster than real hardware for demonstration purposes.</p>
+</div>
+
+<!-- COMPONENTS TABLE -->
+<div class="card">
+    <h2>Components Used</h2>
+    <table>
+        <thead>
+            <tr><th>Component</th><th>Model / Value</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Microcontroller</td><td>Arduino Uno</td><td>Runs state machine logic</td></tr>
+            <tr><td>LED – Traffic Red</td><td>5 mm, 220 Ω</td><td>Stop signal for vehicles</td></tr>
+            <tr><td>LED – Traffic Yellow</td><td>5 mm, 220 Ω</td><td>Warning — prepare to stop</td></tr>
+            <tr><td>LED – Traffic Green</td><td>5 mm, 220 Ω</td><td>Go signal for vehicles</td></tr>
+            <tr><td>LED – Pedestrian Red</td><td>5 mm, 220 Ω</td><td>Don't walk signal</td></tr>
+            <tr><td>LED – Pedestrian Green</td><td>5 mm, 220 Ω</td><td>Walk signal</td></tr>
+            <tr><td>Buzzer</td><td>Passive, 5 V</td><td>Audible crossing alert</td></tr>
+            <tr><td>Push Button</td><td>Tactile, INPUT_PULLUP</td><td>Pedestrian crossing request</td></tr>
+            <tr><td>7-Segment Display</td><td>Common cathode</td><td>Walk phase countdown (0–8 s)</td></tr>
+            <tr><td>Breadboard &amp; Jumper Wires</td><td>–</td><td>Circuit connections</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- PIN MAPPING -->
+<div class="card">
+    <h2>Pin Mapping</h2>
+    <div class="pin-grid">
+        <div class="pin-item"><strong>Traffic Red LED</strong>Digital Pin 2</div>
+        <div class="pin-item"><strong>Traffic Yellow LED</strong>Digital Pin 3</div>
+        <div class="pin-item"><strong>Traffic Green LED</strong>Digital Pin 4</div>
+        <div class="pin-item"><strong>Pedestrian Red LED</strong>Digital Pin 5</div>
+        <div class="pin-item"><strong>Pedestrian Green LED</strong>Digital Pin 6</div>
+        <div class="pin-item"><strong>Buzzer</strong>Digital Pin 7</div>
+        <div class="pin-item"><strong>Push Button</strong>Digital Pin 8</div>
+        <div class="pin-item"><strong>7-Seg A</strong>Digital Pin 9</div>
+        <div class="pin-item"><strong>7-Seg B</strong>Digital Pin 10</div>
+        <div class="pin-item"><strong>7-Seg C</strong>Digital Pin 11</div>
+        <div class="pin-item"><strong>7-Seg D</strong>Digital Pin 12</div>
+        <div class="pin-item"><strong>7-Seg E</strong>Analog Pin A0</div>
+        <div class="pin-item"><strong>7-Seg F</strong>Analog Pin A1</div>
+        <div class="pin-item"><strong>7-Seg G</strong>Analog Pin A2</div>
+    </div>
+</div>
+
+<!-- TECHNICAL LOGIC -->
+<div class="card">
+    <h2>Technical Logic</h2>
+    <p>
+        The system uses an <strong>enum-based state machine</strong> with four states:
+        <code>TRAFFIC_GREEN</code>, <code>TRAFFIC_YELLOW</code>, <code>TRAFFIC_RED</code>, and
+        <code>PEDESTRIAN_WALK</code>. Timing is handled with <code>millis()</code> rather than
+        <code>delay()</code>, so the button can be read at any point without missing a press.
+    </p>
+    <p>
+        The button uses <code>INPUT_PULLUP</code> — the pin reads HIGH by default and LOW when pressed —
+        which avoids the need for an external pull-down resistor. The 7-segment display is driven
+        directly from seven Arduino pins using a digit lookup table: a <code>byte DIGITS[10][7]</code>
+        array stores the on/off pattern for each segment for digits 0–9.
+    </p>
+    <p>
+        The buzzer uses <code>tone()</code> to generate sound at 1000 Hz during the normal walk phase,
+        switching to a faster 1200 Hz pattern in the last 3 seconds to signal urgency — matching the
+        behaviour of accessible pedestrian signals in real infrastructure.
+    </p>
+</div>
+
+<!-- ARDUINO CODE -->
+<div class="card">
+    <h2>Arduino Code</h2>
+<pre><span class="cm">// Traffic Light Simulation with Pedestrian Button</span>
+
+<span class="cm">// ── Pin definitions ───────────────────────────</span>
+<span class="kw">const int</span> TL_RED    = <span class="num">2</span>, TL_YELLOW = <span class="num">3</span>, TL_GREEN  = <span class="num">4</span>;
+<span class="kw">const int</span> PED_RED   = <span class="num">5</span>, PED_GREEN  = <span class="num">6</span>;
+<span class="kw">const int</span> BUZZER    = <span class="num">7</span>, BUTTON     = <span class="num">8</span>;
+<span class="kw">const int</span> SEG_PINS[] = {<span class="num">9</span>,<span class="num">10</span>,<span class="num">11</span>,<span class="num">12</span>,A0,A1,A2}; <span class="cm">// a–g</span>
+
+<span class="cm">// Digit patterns (segments a b c d e f g)</span>
+<span class="kw">const byte</span> DIGITS[<span class="num">10</span>][<span class="num">7</span>] = {
+  {<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>}, <span class="cm">// 0</span>
+  {<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>}, <span class="cm">// 1</span>
+  {<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>}, <span class="cm">// 2</span>
+  {<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">1</span>}, <span class="cm">// 3</span>
+  {<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>}, <span class="cm">// 4</span>
+  {<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>}, <span class="cm">// 5</span>
+  {<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>}, <span class="cm">// 6</span>
+  {<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>}, <span class="cm">// 7</span>
+  {<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>}, <span class="cm">// 8</span>
+  {<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">1</span>}, <span class="cm">// 9</span>
+};
+
+<span class="kw">enum</span> State { TRAFFIC_GREEN, TRAFFIC_YELLOW, TRAFFIC_RED, PEDESTRIAN_WALK };
+State currentState = TRAFFIC_GREEN;
+<span class="kw">bool</span>  pedRequested = <span class="kw">false</span>;
+<span class="kw">unsigned long</span> stateStart = <span class="num">0</span>;
+
+<span class="kw">const unsigned long</span> DUR_GREEN  = <span class="num">6000</span>;
+<span class="kw">const unsigned long</span> DUR_YELLOW = <span class="num">2000</span>;
+<span class="kw">const unsigned long</span> DUR_RED    = <span class="num">1000</span>;
+<span class="kw">const unsigned long</span> DUR_WALK   = <span class="num">8000</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(TL_RED, OUTPUT); <span class="fn">pinMode</span>(TL_YELLOW, OUTPUT); <span class="fn">pinMode</span>(TL_GREEN, OUTPUT);
+  <span class="fn">pinMode</span>(PED_RED, OUTPUT); <span class="fn">pinMode</span>(PED_GREEN, OUTPUT);
+  <span class="fn">pinMode</span>(BUZZER, OUTPUT);
+  <span class="fn">pinMode</span>(BUTTON, INPUT_PULLUP);
+  <span class="kw">for</span> (<span class="kw">int</span> i=<span class="num">0</span>; i&lt;<span class="num">7</span>; i++) <span class="fn">pinMode</span>(SEG_PINS[i], OUTPUT);
+  <span class="fn">enterState</span>(TRAFFIC_GREEN);
+}
+
+<span class="kw">void</span> <span class="fn">enterState</span>(State s) {
+  currentState = s; stateStart = <span class="fn">millis</span>();
+  <span class="kw">switch</span>(s) {
+    <span class="kw">case</span> TRAFFIC_GREEN:
+      <span class="fn">digitalWrite</span>(TL_RED,<span class="num">0</span>); <span class="fn">digitalWrite</span>(TL_YELLOW,<span class="num">0</span>); <span class="fn">digitalWrite</span>(TL_GREEN,<span class="num">1</span>);
+      <span class="fn">digitalWrite</span>(PED_RED,<span class="num">1</span>); <span class="fn">digitalWrite</span>(PED_GREEN,<span class="num">0</span>); <span class="fn">noTone</span>(BUZZER); <span class="kw">break</span>;
+    <span class="kw">case</span> TRAFFIC_YELLOW:
+      <span class="fn">digitalWrite</span>(TL_RED,<span class="num">0</span>); <span class="fn">digitalWrite</span>(TL_YELLOW,<span class="num">1</span>); <span class="fn">digitalWrite</span>(TL_GREEN,<span class="num">0</span>);
+      <span class="fn">digitalWrite</span>(PED_RED,<span class="num">1</span>); <span class="fn">digitalWrite</span>(PED_GREEN,<span class="num">0</span>); <span class="fn">noTone</span>(BUZZER); <span class="kw">break</span>;
+    <span class="kw">case</span> TRAFFIC_RED:
+      <span class="fn">digitalWrite</span>(TL_RED,<span class="num">1</span>); <span class="fn">digitalWrite</span>(TL_YELLOW,<span class="num">0</span>); <span class="fn">digitalWrite</span>(TL_GREEN,<span class="num">0</span>);
+      <span class="fn">digitalWrite</span>(PED_RED,<span class="num">1</span>); <span class="fn">digitalWrite</span>(PED_GREEN,<span class="num">0</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> PEDESTRIAN_WALK:
+      <span class="fn">digitalWrite</span>(TL_RED,<span class="num">1</span>); <span class="fn">digitalWrite</span>(TL_YELLOW,<span class="num">0</span>); <span class="fn">digitalWrite</span>(TL_GREEN,<span class="num">0</span>);
+      <span class="fn">digitalWrite</span>(PED_RED,<span class="num">0</span>); <span class="fn">digitalWrite</span>(PED_GREEN,<span class="num">1</span>);
+      pedRequested = <span class="kw">false</span>; <span class="kw">break</span>;
+  }
+}
+
+<span class="kw">void</span> <span class="fn">showDigit</span>(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n &lt; <span class="num">0</span> || n &gt; <span class="num">9</span>) { <span class="kw">for</span>(<span class="kw">int</span> i=<span class="num">0</span>;i&lt;<span class="num">7</span>;i++) <span class="fn">digitalWrite</span>(SEG_PINS[i],LOW); <span class="kw">return</span>; }
+  <span class="kw">for</span> (<span class="kw">int</span> i=<span class="num">0</span>; i&lt;<span class="num">7</span>; i++) <span class="fn">digitalWrite</span>(SEG_PINS[i], DIGITS[n][i]);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">unsigned long</span> elapsed = <span class="fn">millis</span>() - stateStart;
+  <span class="kw">if</span> (<span class="fn">digitalRead</span>(BUTTON) == LOW) { pedRequested = <span class="kw">true</span>; <span class="fn">delay</span>(<span class="num">50</span>); }
+
+  <span class="kw">switch</span>(currentState) {
+    <span class="kw">case</span> TRAFFIC_GREEN:
+      <span class="kw">if</span> (elapsed &gt;= DUR_GREEN &amp;&amp; pedRequested) <span class="fn">enterState</span>(TRAFFIC_YELLOW);
+      <span class="kw">else if</span> (elapsed &gt;= DUR_GREEN*<span class="num">2</span>) <span class="fn">enterState</span>(TRAFFIC_YELLOW); <span class="kw">break</span>;
+    <span class="kw">case</span> TRAFFIC_YELLOW:
+      <span class="kw">if</span> (elapsed &gt;= DUR_YELLOW) <span class="fn">enterState</span>(TRAFFIC_RED); <span class="kw">break</span>;
+    <span class="kw">case</span> TRAFFIC_RED:
+      <span class="kw">if</span> (elapsed &gt;= DUR_RED) <span class="fn">enterState</span>(PEDESTRIAN_WALK); <span class="kw">break</span>;
+    <span class="kw">case</span> PEDESTRIAN_WALK: {
+      <span class="kw">unsigned long</span> rem = DUR_WALK - elapsed;
+      <span class="fn">showDigit</span>((<span class="kw">int</span>)(rem/<span class="num">1000</span>));
+      <span class="kw">if</span> (rem &gt; <span class="num">3000</span>) { <span class="fn">tone</span>(BUZZER,<span class="num">1000</span>,<span class="num">200</span>); <span class="fn">delay</span>(<span class="num">800</span>); }
+      <span class="kw">else</span>            { <span class="fn">tone</span>(BUZZER,<span class="num">1200</span>,<span class="num">100</span>); <span class="fn">delay</span>(<span class="num">300</span>); }
+      <span class="kw">if</span> (rem &lt;= <span class="num">2000</span>) <span class="fn">digitalWrite</span>(PED_GREEN, (<span class="fn">millis</span>()/<span class="num">300</span>)%<span class="num">2</span>);
+      <span class="kw">if</span> (elapsed &gt;= DUR_WALK) { <span class="fn">noTone</span>(BUZZER); <span class="fn">enterState</span>(TRAFFIC_GREEN); }
+      <span class="kw">break</span>;
+    }
+  }
+}</pre>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="card">
+    <h2>How It Works</h2>
+    <ol class="steps">
+        <li>
+            <div><strong>Idle — traffic green</strong> — Vehicles get the green light. The pedestrian signal
+            shows red. The system waits here until a pedestrian presses the button.</div>
+        </li>
+        <li>
+            <div><strong>Button press queued</strong> — Pressing the button sets a flag
+            (<code>pedRequested = true</code>). The system finishes the current green phase before acting,
+            so traffic is never cut short abruptly.</div>
+        </li>
+        <li>
+            <div><strong>Traffic yellow — 2 seconds</strong> — The yellow light warns drivers to prepare to
+            stop. Both pedestrian lights remain red during this transition.</div>
+        </li>
+        <li>
+            <div><strong>Traffic red pause — 1 second</strong> — A brief pause with all lights stable before
+            pedestrians are invited to cross, giving vehicles time to come to a full stop.</div>
+        </li>
+        <li>
+            <div><strong>Pedestrian walk — 8 seconds</strong> — Traffic stays red. The pedestrian green light
+            comes on, the buzzer beeps steadily, and the 7-segment display counts down from 8. In the last
+            3 seconds the beep speeds up; in the last 2 seconds the green light flashes as a warning.</div>
+        </li>
+        <li>
+            <div><strong>Back to green</strong> — After the walk phase ends the buzzer stops, the 7-segment
+            blanks, and the system returns to traffic green — ready for the next pedestrian request.</div>
+        </li>
+    </ol>
+</div>
+
+<!-- WOKWI BUTTON -->
+<div class="btn-container">
+    <a href="https://wokwi.com" target="_blank" class="wokwi-btn">View Wokwi Simulation</a>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 Robotics Portfolio | Arduino Uno · State Machine · Pedestrian Crossing System</p>
+</div>
+
+<!-- SIMULATOR SCRIPT -->
+<script>
+    // State machine mirroring the Arduino logic (faster timing for demo)
+    const DUR = { GREEN: 5000, YELLOW: 1500, RED: 800, WALK: 8000 };
+    let state = 'GREEN';
+    let stateStart = Date.now();
+    let pedRequested = false;
+    let walkInterval = null;
+    let flashInterval = null;
+    let countdown = 8;
+
+    const el = {
+        tlRed:    document.getElementById('tlRed'),
+        tlYellow: document.getElementById('tlYellow'),
+        tlGreen:  document.getElementById('tlGreen'),
+        pedRed:   document.getElementById('pedRed'),
+        pedGreen: document.getElementById('pedGreen'),
+        seg:      document.getElementById('segDisplay'),
+        label:    document.getElementById('stateLabel'),
+        btn:      document.getElementById('pedBtn'),
+    };
+
+    function setLight(el, onClass, offClass) {
+        el.className = 'traffic-light ' + onClass;
+    }
+
+    function clearFlash() {
+        if (flashInterval) { clearInterval(flashInterval); flashInterval = null; }
+    }
+
+    function enterState(s) {
+        state = s;
+        stateStart = Date.now();
+        clearFlash();
+
+        if (s === 'GREEN') {
+            setLight(el.tlRed,    'light-off-red',    '');
+            setLight(el.tlYellow, 'light-off-yellow', '');
+            setLight(el.tlGreen,  'light-on-green',   '');
+            setLight(el.pedRed,   'light-on-red',     '');
+            setLight(el.pedGreen, 'light-off-green',  '');
+            el.seg.textContent = '–'; el.seg.className = 'seg-display off';
+            el.label.style.background = '#e8f8ee'; el.label.style.color = '#1a7a3a';
+            el.label.textContent = '● TRAFFIC GREEN — Vehicles moving';
+            el.btn.disabled = false;
+
+        } else if (s === 'YELLOW') {
+            setLight(el.tlRed,    'light-off-red',    '');
+            setLight(el.tlYellow, 'light-on-yellow',  '');
+            setLight(el.tlGreen,  'light-off-green',  '');
+            setLight(el.pedRed,   'light-on-red',     '');
+            setLight(el.pedGreen, 'light-off-green',  '');
+            el.seg.textContent = '–'; el.seg.className = 'seg-display off';
+            el.label.style.background = '#fffbe6'; el.label.style.color = '#7a5a00';
+            el.label.textContent = '● TRAFFIC YELLOW — Prepare to stop';
+
+        } else if (s === 'RED') {
+            setLight(el.tlRed,    'light-on-red',    '');
+            setLight(el.tlYellow, 'light-off-yellow','');
+            setLight(el.tlGreen,  'light-off-green', '');
+            setLight(el.pedRed,   'light-on-red',    '');
+            setLight(el.pedGreen, 'light-off-green', '');
+            el.label.style.background = '#fdecea'; el.label.style.color = '#7a1a1a';
+            el.label.textContent = '● TRAFFIC RED — Waiting…';
+
+        } else if (s === 'WALK') {
+            pedRequested = false;
+            setLight(el.tlRed,    'light-on-red',    '');
+            setLight(el.tlYellow, 'light-off-yellow','');
+            setLight(el.tlGreen,  'light-off-green', '');
+            setLight(el.pedRed,   'light-off-red',   '');
+            setLight(el.pedGreen, 'light-on-green',  '');
+            countdown = 8;
+            el.seg.className = 'seg-display';
+            el.label.style.background = '#e8f0fe'; el.label.style.color = '#1a3a7a';
+            el.label.textContent = '● PEDESTRIAN WALK — Cross now!';
+            el.btn.disabled = true;
+        }
+    }
+
+    function tick() {
+        const elapsed = Date.now() - stateStart;
+
+        if (state === 'GREEN') {
+            if (elapsed >= DUR.GREEN && pedRequested) enterState('YELLOW');
+            else if (elapsed >= DUR.GREEN * 2) enterState('YELLOW');
+
+        } else if (state === 'YELLOW') {
+            if (elapsed >= DUR.YELLOW) enterState('RED');
+
+        } else if (state === 'RED') {
+            if (elapsed >= DUR.RED) enterState('WALK');
+
+        } else if (state === 'WALK') {
+            const rem = DUR.WALK - elapsed;
+            const sec = Math.max(0, Math.floor(rem / 1000));
+            countdown = sec;
+            el.seg.textContent = sec;
+
+            // Flash pedestrian green in last 2 seconds
+            if (rem <= 2000 && !flashInterval) {
+                flashInterval = setInterval(() => {
+                    el.pedGreen.className = 'traffic-light ' +
+                        (el.pedGreen.className.includes('on') ? 'light-off-green' : 'light-on-green');
+                }, 280);
+            }
+
+            // Update label urgency
+            if (rem <= 3000) {
+                el.label.textContent = '⚠ PEDESTRIAN WALK — Hurry!';
+                el.label.style.background = '#fff3e0';
+                el.label.style.color = '#7a4000';
+            }
+
+            if (elapsed >= DUR.WALK) {
+                clearFlash();
+                enterState('GREEN');
+            }
+        }
+    }
+
+    function requestCrossing() {
+        if (state === 'GREEN' && !pedRequested) {
+            pedRequested = true;
+            el.btn.textContent = '✓ Request queued';
+            el.btn.disabled = true;
+            el.label.textContent = '● TRAFFIC GREEN — Crossing queued…';
+        }
+    }
+
+    // Start
+    enterState('GREEN');
+    setInterval(tick, 100);
+</script>
+
+</body>
+</html>
