@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display & Information System - Robotics Portfolio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fdf2f2;
+        }
+
+        header {
+            background: #c0392b;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        header h1 { margin: 0 0 8px 0; font-size: 1.9rem; }
+        header p  { margin: 0; opacity: 0.9; font-size: 1rem; }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #c0392b;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        p { margin: 0 0 10px 0; }
+        p:last-child { margin-bottom: 0; }
+
+        code {
+            background: #fdf2f2;
+            color: #c0392b;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        /* ── Table ── */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; }
+        th { background: #c0392b; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+        td { padding: 9px 14px; border-bottom: 1px solid #f2d9d9; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) td { background: #fdf8f8; }
+
+        /* ── Pin grid ── */
+        .pin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .pin-item {
+            background: #fdf2f2;
+            border-left: 3px solid #c0392b;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .pin-item strong {
+            display: block;
+            color: #c0392b;
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+
+        /* ── LCD mockup ── */
+        .lcd-wrap { display: flex; justify-content: center; margin: 16px 0 6px; }
+        .lcd {
+            background: #1a3a1a;
+            border: 3px solid #555;
+            border-radius: 6px;
+            padding: 14px 20px;
+            box-shadow: 0 0 0 6px #3a3a3a, 0 4px 12px rgba(0,0,0,0.4);
+            font-family: 'Courier New', monospace;
+        }
+        .lcd-row {
+            color: #00e676;
+            font-size: 1.05rem;
+            letter-spacing: 0.12em;
+            height: 22px;
+            text-shadow: 0 0 6px rgba(0,230,118,0.6);
+            white-space: pre;
+            transition: color 0.4s, text-shadow 0.4s;
+        }
+        .lcd-caption { text-align: center; font-size: 0.8em; color: #888; margin-top: 6px; }
+
+        /* ── Code block ── */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 18px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            line-height: 1.75;
+            margin: 10px 0 0 0;
+        }
+        .kw  { color: #569cd6; }
+        .fn  { color: #dcdcaa; }
+        .cm  { color: #6a9955; font-style: italic; }
+        .str { color: #ce9178; }
+        .num { color: #b5cea8; }
+        .pp  { color: #c586c0; }
+
+        /* ── Numbered steps ── */
+        .steps { counter-reset: step; list-style: none; padding: 0; margin: 10px 0 0 0; }
+        .steps li {
+            counter-increment: step;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .steps li::before {
+            content: counter(step);
+            background: #c0392b;
+            color: #fff;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85em;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ── Button ── */
+        .btn-container { text-align: center; margin-top: 30px; }
+        .wokwi-btn {
+            background-color: #c0392b;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .wokwi-btn:hover { background-color: #a93226; }
+
+        .footer { text-align: center; font-size: 0.9em; color: #7f8c8d; margin-top: 40px; }
+
+        /* ── Real-world use case tiles ── */
+        .usecase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .usecase-tile {
+            background: #fdf2f2;
+            border: 1px solid #f5c6c6;
+            border-radius: 8px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+        .usecase-tile .uc-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .usecase-tile .uc-title {
+            font-weight: 700;
+            font-size: 0.88em;
+            color: #c0392b;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .usecase-tile p {
+            font-size: 0.8em;
+            color: #666;
+            margin: 0;
+        }
+
+        /* ── Component breakdown cards ── */
+        .comp-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .comp-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: #fdf2f2;
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .comp-badge {
+            background: #c0392b;
+            color: #fff;
+            font-size: 0.72em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .comp-item h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.95em;
+            color: #222;
+        }
+        .comp-item p {
+            margin: 0;
+            font-size: 0.85em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <h1>Smart Sensor Display System</h1>
+    <p>Task 5: Display &amp; Information System</p>
+</header>
+
+<!-- PROJECT OVERVIEW -->
+<div class="card">
+    <h2>Project Overview</h2>
+    <p>
+        This project builds a real-time information display system on Arduino Uno. An
+        <strong>HC-SR04 ultrasonic sensor</strong> continuously measures distance, while an
+        <strong>LDR (Light Dependent Resistor)</strong> reads ambient light levels. All data is
+        presented live on a <strong>16×2 I²C LCD screen</strong>, with three colour-coded LEDs
+        acting as instant visual status indicators — green for clear, yellow for caution, and red
+        for close-range alert.
+    </p>
+    <p>
+        The system demonstrates how embedded displays and multi-sensor fusion can create a compact
+        monitoring panel, similar to dashboards found in smart home devices and industrial equipment.
+    </p>
+</div>
+
+<!-- REAL-WORLD APPLICATIONS -->
+<div class="card">
+    <h2>Where Is This Used?</h2>
+    <p>
+        Display and information systems like this one are everywhere in the real world. Any time a device
+        needs to show sensor data to a person — without a phone or computer screen nearby — an embedded
+        display system is the answer. Here are some common places this exact kind of project appears:
+    </p>
+    <div class="usecase-grid">
+        <div class="usecase-tile">
+            <span class="uc-icon">🏠</span>
+            <span class="uc-title">Smart Home</span>
+            <p>Indoor air quality monitors and room occupancy sensors display live readings on a small LCD panel.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🏭</span>
+            <span class="uc-title">Industrial Safety</span>
+            <p>Factory floor panels show proximity alerts when workers enter restricted machine zones.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🚗</span>
+            <span class="uc-title">Vehicle Systems</span>
+            <p>Parking sensors display distance to obstacles on a dashboard screen with colour-coded warnings.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🌱</span>
+            <span class="uc-title">Agriculture</span>
+            <p>Greenhouse monitors show soil moisture, light intensity, and temperature on field displays.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🏥</span>
+            <span class="uc-title">Healthcare</span>
+            <p>Bedside monitors display patient environment data — light levels, motion — with instant LED alerts.</p>
+        </div>
+        <div class="usecase-tile">
+            <span class="uc-icon">🤖</span>
+            <span class="uc-title">Robotics</span>
+            <p>Autonomous robots show their sensor readings on an onboard display for live diagnostics.</p>
+        </div>
+    </div>
+</div>
+
+<!-- COMPONENT BREAKDOWN -->
+<div class="card">
+    <h2>What Each Component Does</h2>
+    <p>Each part of the circuit has a specific role in collecting, processing, and presenting information:</p>
+    <div class="comp-breakdown">
+
+        <div class="comp-item">
+            <span class="comp-badge">Arduino Uno</span>
+            <div>
+                <h4>The Brain</h4>
+                <p>Reads all sensor inputs, runs the decision logic, and tells every other component what to do.
+                It runs the <code>loop()</code> function every 500 ms — collecting data, calculating values,
+                updating the display, and switching the correct LED on or off.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">HC-SR04</span>
+            <div>
+                <h4>Ultrasonic Distance Sensor</h4>
+                <p>Emits a short burst of ultrasound from the TRIG pin, then listens on the ECHO pin for the
+                reflection. The time gap between send and receive tells the Arduino exactly how far away an
+                object is — the same principle used in car parking sensors and automatic doors.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">LDR</span>
+            <div>
+                <h4>Light Dependent Resistor</h4>
+                <p>A resistor whose resistance drops as light increases. Paired with a fixed 10 kΩ resistor,
+                it forms a voltage divider — brighter light means a higher voltage at pin A0. The Arduino
+                reads this as a number from 0 to 1023 and converts it to a 0–100% brightness percentage.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">LCD 16×2</span>
+            <div>
+                <h4>Information Display</h4>
+                <p>A 16-character, 2-row screen that shows the sensor values in plain text. The I²C backpack
+                reduces the wiring to just two data lines (SDA and SCL), making it easy to add to any project.
+                Row 0 shows the distance reading and row 1 shows light level plus a status word.</p>
+            </div>
+        </div>
+
+        <div class="comp-item">
+            <span class="comp-badge">LEDs × 3</span>
+            <div>
+                <h4>Visual Status Indicators</h4>
+                <p>Green, yellow, and red LEDs give an instant at-a-glance status without needing to read the
+                screen. Green means the area is clear (&gt;30 cm), yellow is a caution zone (15–30 cm), and
+                red means something is very close (≤15 cm). Each LED has a 220 Ω resistor to limit current
+                and prevent damage to the Arduino pin.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- LCD PREVIEW -->
+<div class="card">
+    <h2>LCD Display Output</h2>
+    <p>The 16×2 LCD updates every 500 ms with live sensor readings and a plain-English status word:</p>
+    <div class="lcd-wrap">
+        <div class="lcd">
+            <div class="lcd-row" id="lcd1">Dist:  42 cm    </div>
+            <div class="lcd-row" id="lcd2">Light: 78%   OK </div>
+        </div>
+    </div>
+    <p class="lcd-caption">Simulated live preview — cycles through sample sensor states</p>
+</div>
+
+<!-- COMPONENTS -->
+<div class="card">
+    <h2>Components Used</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Model / Value</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Microcontroller</td><td>Arduino Uno</td><td>Main processing unit</td></tr>
+            <tr><td>LCD Display</td><td>16×2 with I²C backpack (0x27)</td><td>Shows sensor readings &amp; status</td></tr>
+            <tr><td>Ultrasonic Sensor</td><td>HC-SR04</td><td>Measures distance (2–400 cm)</td></tr>
+            <tr><td>Light Sensor</td><td>LDR + 10 kΩ resistor</td><td>Reads ambient light level</td></tr>
+            <tr><td>LED – Green</td><td>5 mm, 220 Ω resistor</td><td>Safe / clear status</td></tr>
+            <tr><td>LED – Yellow</td><td>5 mm, 220 Ω resistor</td><td>Caution / mid-range</td></tr>
+            <tr><td>LED – Red</td><td>5 mm, 220 Ω resistor</td><td>Close-range alert</td></tr>
+            <tr><td>Breadboard &amp; Jumper Wires</td><td>–</td><td>Circuit connections</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- PIN MAPPING -->
+<div class="card">
+    <h2>Pin Mapping</h2>
+    <div class="pin-grid">
+        <div class="pin-item"><strong>HC-SR04 TRIG</strong>Digital Pin 9</div>
+        <div class="pin-item"><strong>HC-SR04 ECHO</strong>Digital Pin 10</div>
+        <div class="pin-item"><strong>LDR Output</strong>Analog Pin A0</div>
+        <div class="pin-item"><strong>LCD SDA</strong>Analog Pin A4</div>
+        <div class="pin-item"><strong>LCD SCL</strong>Analog Pin A5</div>
+        <div class="pin-item"><strong>Green LED</strong>Digital Pin 2</div>
+        <div class="pin-item"><strong>Yellow LED</strong>Digital Pin 3</div>
+        <div class="pin-item"><strong>Red LED</strong>Digital Pin 4</div>
+    </div>
+</div>
+
+<!-- TECHNICAL LOGIC -->
+<div class="card">
+    <h2>Technical Logic</h2>
+    <p>
+        Drawing from <strong>Lesson 3.1 (Ultrasonic Sensor)</strong> and <strong>Lesson 5.2 (LCD Display)</strong>
+        in the KS0530 Manual, the system uses <code>pulseIn()</code> to calculate distance from sound
+        travel time: <code>distance = duration / 58.2</code>. The LDR is read via
+        <code>analogRead(A0)</code> and scaled to 0–100% using <code>map()</code>.
+    </p>
+    <p>
+        The <code>LiquidCrystal_I2C</code> library drives the display over the I²C bus (address
+        <code>0x27</code>), keeping wiring minimal — only two data wires needed. LED thresholds are
+        set at <strong>&lt;15 cm</strong> (red alert), <strong>15–30 cm</strong> (yellow caution),
+        and <strong>&gt;30 cm</strong> (green clear).
+    </p>
+</div>
+
+<!-- ARDUINO CODE -->
+<div class="card">
+    <h2>Arduino Code</h2>
+<pre><span class="pp">#include</span> <span class="str">&lt;Wire.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;LiquidCrystal_I2C.h&gt;</span>
+
+<span class="cm">// ── Pin definitions ───────────────────────────</span>
+<span class="kw">const int</span> TRIG_PIN  = <span class="num">9</span>;
+<span class="kw">const int</span> ECHO_PIN  = <span class="num">10</span>;
+<span class="kw">const int</span> LDR_PIN   = <span class="num">A0</span>;
+<span class="kw">const int</span> LED_GREEN = <span class="num">2</span>;
+<span class="kw">const int</span> LED_YELL  = <span class="num">3</span>;
+<span class="kw">const int</span> LED_RED   = <span class="num">4</span>;
+
+<span class="cm">// LCD: I²C address 0x27, 16 cols, 2 rows</span>
+LiquidCrystal_I2C <span class="fn">lcd</span>(<span class="num">0x27</span>, <span class="num">16</span>, <span class="num">2</span>);
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(TRIG_PIN,  OUTPUT);
+  <span class="fn">pinMode</span>(ECHO_PIN,  INPUT);
+  <span class="fn">pinMode</span>(LED_GREEN, OUTPUT);
+  <span class="fn">pinMode</span>(LED_YELL,  OUTPUT);
+  <span class="fn">pinMode</span>(LED_RED,   OUTPUT);
+
+  lcd.<span class="fn">init</span>();
+  lcd.<span class="fn">backlight</span>();
+
+  <span class="cm">// Startup splash screen</span>
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">0</span>); lcd.<span class="fn">print</span>(<span class="str">"  Smart Sensor  "</span>);
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">1</span>); lcd.<span class="fn">print</span>(<span class="str">"  Display  v1   "</span>);
+  <span class="fn">delay</span>(<span class="num">2000</span>);
+}
+
+<span class="kw">long</span> <span class="fn">getDistance</span>() {
+  <span class="fn">digitalWrite</span>(TRIG_PIN, LOW);  <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(TRIG_PIN, HIGH); <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(TRIG_PIN, LOW);
+  <span class="kw">long</span> dur = <span class="fn">pulseIn</span>(ECHO_PIN, HIGH);
+  <span class="kw">return</span> dur / <span class="num">58.2</span>; <span class="cm">// microseconds → centimetres</span>
+}
+
+<span class="kw">void</span> <span class="fn">updateLEDs</span>(<span class="kw">long</span> dist) {
+  <span class="fn">digitalWrite</span>(LED_GREEN, dist > <span class="num">30</span>);
+  <span class="fn">digitalWrite</span>(LED_YELL,  dist > <span class="num">15</span> && dist <= <span class="num">30</span>);
+  <span class="fn">digitalWrite</span>(LED_RED,   dist <= <span class="num">15</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">long</span> dist  = <span class="fn">getDistance</span>();
+  <span class="kw">int</span>  ldr   = <span class="fn">analogRead</span>(LDR_PIN);
+  <span class="kw">int</span>  light = <span class="fn">map</span>(ldr, <span class="num">0</span>, <span class="num">1023</span>, <span class="num">0</span>, <span class="num">100</span>);
+
+  <span class="cm">// Row 0 — distance</span>
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">0</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Dist: "</span>); lcd.<span class="fn">print</span>(dist); lcd.<span class="fn">print</span>(<span class="str">" cm    "</span>);
+
+  <span class="cm">// Row 1 — light level + status word</span>
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">1</span>);
+  lcd.<span class="fn">print</span>(<span class="str">"Light:"</span>); lcd.<span class="fn">print</span>(light); lcd.<span class="fn">print</span>(<span class="str">"%  "</span>);
+  lcd.<span class="fn">print</span>(dist <= <span class="num">15</span> ? <span class="str">"ALERT"</span> : dist <= <span class="num">30</span> ? <span class="str">"NEAR "</span> : <span class="str">"OK   "</span>);
+
+  <span class="fn">updateLEDs</span>(dist);
+  <span class="fn">delay</span>(<span class="num">500</span>);
+}</pre>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="card">
+    <h2>How It Works</h2>
+    <ol class="steps">
+        <li>
+            <div><strong>Startup splash</strong> — On power-up the LCD shows "Smart Sensor Display v1" for 2 seconds,
+            confirming the I²C screen is wired and initialised correctly.</div>
+        </li>
+        <li>
+            <div><strong>Distance measurement</strong> — Every 500 ms the HC-SR04 fires a 10 µs ultrasonic pulse.
+            <code>pulseIn()</code> times the echo return; dividing by 58.2 converts travel time to centimetres.</div>
+        </li>
+        <li>
+            <div><strong>Light reading</strong> — The LDR forms a voltage divider with a 10 kΩ resistor.
+            <code>analogRead(A0)</code> returns 0–1023, which <code>map()</code> scales to a 0–100% brightness value.</div>
+        </li>
+        <li>
+            <div><strong>LCD update</strong> — Row 0 shows the distance reading; Row 1 shows light percentage and a
+            plain-English status word: <strong>OK</strong>, <strong>NEAR</strong>, or <strong>ALERT</strong>.</div>
+        </li>
+        <li>
+            <div><strong>LED indicators</strong> — Green lights when distance &gt;30 cm (safe), yellow between 15–30 cm
+            (caution), and red at ≤15 cm (close-range alert) for an instant at-a-glance status.</div>
+        </li>
+    </ol>
+</div>
+
+<!-- WOKWI BUTTON -->
+<div class="btn-container">
+    <a href="https://wokwi.com/projects/458372475640128513" target="_blank" class="wokwi-btn">View Wokwi Simulation</a>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 Robotics Portfolio | Based on Keyestudio KS0530 Lessons 3.1 &amp; 5.2</p>
+</div>
+
+<!-- LCD ANIMATION -->
+<script>
+    const screens = [
+        { r1: "Dist:  42 cm    ", r2: "Light: 78%   OK ", color: "#00e676" },
+        { r1: "Dist:  22 cm    ", r2: "Light: 55%  NEAR", color: "#ffd740" },
+        { r1: "Dist:   9 cm    ", r2: "Light: 30% ALERT", color: "#ff5252" },
+        { r1: "Dist:  80 cm    ", r2: "Light: 91%   OK ", color: "#00e676" },
+    ];
+    let idx = 0;
+    const r1 = document.getElementById("lcd1");
+    const r2 = document.getElementById("lcd2");
+
+    setInterval(() => {
+        idx = (idx + 1) % screens.length;
+        const s = screens[idx];
+        r1.textContent = s.r1;
+        r2.textContent = s.r2;
+        r1.style.color = s.color;
+        r2.style.color = s.color;
+        r1.style.textShadow = `0 0 8px ${s.color}80`;
+        r2.style.textShadow = `0 0 8px ${s.color}80`;
+    }, 2000);
+</script>
+
+</body>
+</html>
