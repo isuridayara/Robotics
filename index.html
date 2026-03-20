@@ -3,180 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dayara | Robotics Portfolio</title>
-
+<title>Circuit Lab | Class Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: #e0f7ff; /* light blue background */
-        color: #0f1d2f; /* dark text for contrast */
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:       #0b0e13;
+    --bg2:      #111520;
+    --card:     #141929;
+    --card-h:   #1a2136;
+    --border:   rgba(255,255,255,0.07);
+    --border-h: rgba(52,211,153,0.3);
+    --accent:   #10b981;
+    --accent-2: #34d399;
+    --text:     #e2e8f0;
+    --muted:    #8892a4;
+    --faint:    #4a5568;
+    --mono:     'Space Mono', monospace;
+    --sans:     'DM Sans', sans-serif;
+  }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    header {
-        background: linear-gradient(135deg, #a0e1ff, #60c0ff); /* light blue gradient */
-        padding: 60px 20px;
-        text-align: center;
-    }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 36px;
+    background: rgba(11,14,19,0.88); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 13px; font-weight: 700; color: #60a5fa; letter-spacing: 0.1em; text-decoration: none; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-link {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; color: var(--muted); padding: 8px 18px;
+    border: 1px solid var(--border); border-radius: 6px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .nav-link:hover { color: var(--accent-2); border-color: rgba(52,211,153,0.3); background: rgba(16,185,129,0.08); }
+  .nav-link.active { color: var(--accent-2); border-color: rgba(52,211,153,0.4); background: rgba(16,185,129,0.12); }
+  .nav-link.other:hover { color: #60a5fa; border-color: rgba(99,179,237,0.35); background: rgba(59,130,246,0.08); }
 
-    header h1 {
-        font-size: 42px;
-        margin-bottom: 10px;
-        color: #003366; /* dark blue text */
-    }
+  /* PAGE HEADER */
+  .page-header {
+    padding: 110px 24px 60px; background: var(--bg2);
+    border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .page-header::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 50% 80% at 0% 50%, rgba(16,185,129,0.08) 0%, transparent 70%);
+  }
+  .page-header-inner { max-width: 1140px; margin: 0 auto; position: relative; z-index: 1; }
+  .breadcrumb { font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: 0.1em; margin-bottom: 16px; }
+  .breadcrumb a { color: #60a5fa; text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-title { font-size: clamp(24px, 4vw, 38px); font-weight: 600; color: #d4ddf0; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .page-title span { background: linear-gradient(135deg, #34d399, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .page-sub { font-size: 14px; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; }
 
-    header p {
-        font-size: 18px;
-        color: #00264d;
-    }
+  /* MAIN */
+  main { max-width: 1140px; margin: 0 auto; padding: 56px 24px 80px; }
 
-    section {
-        padding: 50px 20px;
-        max-width: 1100px;
-        margin: auto;
-    }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 
-    .section-title {
-        font-size: 28px;
-        margin-bottom: 30px;
-        border-left: 5px solid #00aaff; /* bright light blue */
-        padding-left: 15px;
-        color: #003366;
-    }
+  /* CARD */
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px; position: relative; overflow: hidden;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(52,211,153,0.2), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card::after {
+    content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 2px;
+    background: linear-gradient(180deg, transparent, var(--accent), transparent);
+    border-radius: 1px; opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover { border-color: var(--border-h); background: var(--card-h); transform: translateY(-3px); }
+  .card:hover::before, .card:hover::after { opacity: 1; }
 
-    .projects {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-    }
+  .task-num {
+    position: absolute; top: 20px; right: 20px;
+    font-family: var(--mono); font-size: 10px; color: var(--faint); letter-spacing: 0.08em;
+  }
+  .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; color: #c8d8f0; letter-spacing: -0.01em; }
+  .card h3 a { text-decoration: none; color: inherit; transition: color 0.2s; }
+  .card h3 a:hover { color: var(--accent-2); }
+  .card p { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
 
-    .card {
-        background: #b3e5ff; /* light blue card */
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 25px rgba(0,0,0,0.25);
-    }
-
-    .card h3 a {
-        text-decoration: none;
-        color: #005580; /* dark blue for links */
-    }
-
-    .card h3 a:hover {
-        text-decoration: underline;
-    }
-
-    footer {
-        text-align: center;
-        padding: 30px;
-        background: #80d4ff;
-        color: #003366;
-        font-size: 14px;
-    }
-
-    .card p {
-        color: #00264d;
-    }
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; background: var(--bg2); }
+  footer p { font-family: var(--mono); font-size: 12px; color: var(--faint); letter-spacing: 0.06em; }
+  footer span { color: #60a5fa; }
 </style>
 </head>
-
 <body>
 
-<header>
-    <h1>Robotics Portfolio</h1>
-    <p>Isuri Dayara 4220z</p>
-</header>
+<nav>
+  <a href="index.html" class="nav-logo">CIRCUIT LAB</a>
+  <div class="nav-links">
+    <a href="weekly.html" class="nav-link other">Weekly Projects</a>
+    <a href="class.html" class="nav-link active">Class Projects</a>
+  </div>
+</nav>
 
-<section>
-    <h2 class="section-title">🚀 My Weekly Projects</h2>
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Class Projects</div>
+    <h1 class="page-title"><span>Class</span> Projects</h1>
+    <p class="page-sub">02 — Once in two weeks &nbsp;·&nbsp; 8 tasks</p>
+  </div>
+</div>
 
-    <div class="projects">
+<main>
+  <div class="grid">
 
-        <div class="card">
-            <h3><a href="reaction-game.html">Reaction Time Game</a></h3>
-            <p>Test your reflexes with this interactive Arduino-based game. LEDs light up randomly and you must press the corresponding button as quickly as possible. Scores are tracked in real-time to challenge your reaction speed.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="snake-game.html">Snake Game</a></h3>
-            <p>Classic Snake game implemented in JavaScript and HTML5 Canvas. Control the snake with arrow keys, eat food to grow, and avoid colliding with walls or yourself. Perfect for practicing game logic and canvas drawing.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="memory-game.html">Memory Game</a></h3>
-            <p>Train your memory and concentration with this interactive Arduino-based game. Match the correct sequence of LED flashes by pressing the corresponding buttons. The sequence length increases as you progress, making the game more challenging.</p>
-        </div>
- <div class="card">
-            <h3><a href="temperature-system.html">Smart Temperature Alert System</a></h3>
-            <p>This project monitors temperature using a sensor and activates an LED and buzzer if the temperature exceeds a safe threshold. It simulates a simple environmental safety system used in smart homes or server rooms.</p>
-        </div>
-         <div class="card">
-            <h3><a href="automatic-night-light.html">Automatic Night Light</a></h3>
-            <p>An Arduino system that automatically turns on lights when the environment becomes dark using an LDR sensor.</p>
-        </div>
-         <div class="card">
-            <h3><a href="parking-sensor.html">Smart Parking Sensor</a></h3>
-            <p>A parking assist system using an ultrasonic sensor that warns drivers when they are too close to an obstacle.</p>
-        </div>
+    <div class="card">
+      <span class="task-num">TASK 01</span>
+      <h3><a href="task1.html">Basic Output Control</a></h3>
+      <p>Design a simple system that controls an output device.</p>
     </div>
-</section>
 
-<section>
-    <h2 class="section-title">📝 Class Projects - Once in Two Weeks</h2>
-
-    <div class="projects">
-
-        <div class="card">
-            <h3><a href="task1.html">🧩 Task 1: Basic Output Control</a></h3>
-            <p>Design a simple system that controls an output device.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task2.html">🧩 Task 2: Variable Control System</a></h3>
-            <p>Design a system where the output behavior changes gradually or dynamically.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task3.html">🧩 Task 3: User Interaction System</a></h3>
-            <p>Design a system that responds to user input.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task4.html">🧩 Task 4: Alert or Notification System</a></h3>
-            <p>Design a system that provides sound or alert-based feedback.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task5.html">🧩 Task 5: Display or Information System</a></h3>
-            <p>Design a system that displays information to the user.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task6.html">🧩 Task 6: Environmental Sensing System</a></h3>
-            <p>Design a system that senses environmental conditions.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task7.html">🧩 Task 7: Monitoring System</a></h3>
-            <p>Design a system that monitors physical or environmental parameters.</p>
-        </div>
-
-        <div class="card">
-            <h3><a href="task8.html">🧩 Task 8: Motion or Actuation System</a></h3>
-            <p>Design a system involving movement or mechanical action.</p>
-        </div>
-
+    <div class="card">
+      <span class="task-num">TASK 02</span>
+      <h3><a href="task2.html">Variable Control System</a></h3>
+      <p>Design a system where the output behavior changes gradually or dynamically.</p>
     </div>
-</section>
+
+    <div class="card">
+      <span class="task-num">TASK 03</span>
+      <h3><a href="task3.html">User Interaction System</a></h3>
+      <p>Design a system that responds to user input.</p>
+    </div>
+
+    <div class="card">
+      <span class="task-num">TASK 04</span>
+      <h3><a href="task4.html">Alert or Notification System</a></h3>
+      <p>Design a system that provides sound or alert-based feedback.</p>
+    </div>
+
+    <div class="card">
+      <span class="task-num">TASK 05</span>
+      <h3><a href="task5.html">Display or Information System</a></h3>
+      <p>Design a system that displays information to the user.</p>
+    </div>
+
+    <div class="card">
+      <span class="task-num">TASK 06</span>
+      <h3><a href="task6.html">Environmental Sensing System</a></h3>
+      <p>Design a system that senses environmental conditions.</p>
+    </div>
+
+    <div class="card">
+      <span class="task-num">TASK 07</span>
+      <h3><a href="task7.html">Monitoring System</a></h3>
+      <p>Design a system that monitors physical or environmental parameters.</p>
+    </div>
+
+    <div class="card">
+      <span class="task-num">TASK 08</span>
+      <h3><a href="task8.html">Motion or Actuation System</a></h3>
+      <p>Design a system involving movement or mechanical action.</p>
+    </div>
+
+  </div>
+</main>
 
 <footer>
-    © 2026 Dayara | Robotics Portfolio
+  <p>© 2026 <span>Circuit Lab</span> &nbsp;·&nbsp; Electronics &amp; Embedded Systems</p>
 </footer>
 
 </body>
